@@ -1,0 +1,17 @@
+Bootstrap: docker
+FROM: nvidia/cuda:11.4.3-runtime-ubuntu20.04
+
+%post
+    DEBIAN_FRONTEND=noninteractive apt-get update -y
+    DEBIAN_FRONTEND=noninteractive apt-get install bash wget git build-essential -y
+    wget https://repo.anaconda.com/archive/Anaconda3-2023.03-Linux-x86_64.sh -O anaconda3.sh
+    /bin/bash anaconda3.sh -b -p /opt/conda
+    rm anaconda3.sh
+    /opt/conda/condabin/conda create -n semantic_sentence python=3.8
+    /opt/conda/condabin/conda init bash
+    /opt/conda/bin/pip install pandas==2.0.1 scikit-learn==1.2.2 allennlp==2.10.1 prettytable==3.7.0 matplotlib==3.7.1
+
+%environment
+    . /opt/conda/etc/profile.d/conda.sh
+    /opt/conda/condabin/conda activate semantic_sentence
+
