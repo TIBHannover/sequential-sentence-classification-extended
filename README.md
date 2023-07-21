@@ -1,19 +1,21 @@
 # Sequential Sentence Classification in Research Papers using Cross-Domain Multi-Task Learning
-This repository contains the source code for the paper
+This repository contains the source code for the extended version of the paper
 
 Arthur Brack, Anett Hoppe, Pascal Buschermöhle, Ralph Ewerth: _Cross-Domain Multi-Task Learning for Sequential Sentence
 Classification in Research Papers_, accepted for publication at the Joint Conference on Digital Libraries (JCDL), 2022,
-preprint available at: https://arxiv.org/pdf/2102.06008.pdf
+available at: https://dl.acm.org/doi/10.1145/3529372.3530922
  
 
 # Installation
-Create an anaconda environment "scibert" from the file environment.yaml with the following command:
 
-- conda env create -f environment.yaml
+## Singularity
+You can build a singularity-container to run the code with the following command:
 
-You can activate the environment with the command "conda activate scibert"
+```singularity build sentence_classification.sif singularity_sentence_classification.def```
 
-Note: the environemnt has been created with "conda env export --no-builds > environment.yaml"
+You can run the container with the following command:
+
+```singularity exec sentence_classification.sif bash```
 
 # Dataset preparation
 
@@ -39,13 +41,13 @@ Note: the environemnt has been created with "conda env export --no-builds > envi
 - convert the XML-files into a text file with convert_dri.py into the folder "datasets/ART"
 
 ### Generic dataset
-- compile the dataset with compile_generic_dataset.py
+- compile the dataset with `compile_generic_dataset.py`
 
 ## SciBERT tokenisation
 
 To speed up the training we tokenize the sentences with SciBERT beforehand.
 
-- Just execute tokenize_files.py
+- Just execute `tokenize_files.py`
 - You should get *_scibert.txt files in the resp. dataset folders
 
 
@@ -66,7 +68,7 @@ After each run different metrics are calculated and stored in the results folder
 
 To execute the baseline experiments do the following:
 
-- open the file baseline_run.py
+- open the file `baseline_run.py`
 - go through the "# ADAPT:" comments and adapt the settings
 - execute the script
 - the script trains the model for each fold resp. restart and evaluates their performance
@@ -74,7 +76,7 @@ To execute the baseline experiments do the following:
 ## Sequential Transfer Learning (INIT)
 
 - train first the baseline models and let them be saved (save_best_models=True)
-- open the file transfer_run.py
+- open the file `transfer_run.py`
 - go through the "# ADAPT:" comments and adapt e.g. the source task and the target task you want to execute
 - execute the script
 - the script will load the baseline models as the source task and train the target task, and then evaluate the performance
@@ -82,7 +84,7 @@ To execute the baseline experiments do the following:
 ## Multi-Task Learning (MULT ALL)
 During Multi-Task Learning you can provide several GPUs (see gpus variable) so that the runs can be executed concurrently.
 
-- open the file multitask_run.py
+- open the file `multitask_run.py`
 - go through the "# ADAPT:" comments and adapt everything you need (e.g. the tasks to be included)
 - execute the script
 - the script will train and evaluate the models
@@ -91,7 +93,7 @@ During Multi-Task Learning you can provide several GPUs (see gpus variable) so t
 During Multi-Task Learning you can provide several GPUs (see gpus variable) so that the runs can be executed concurrently.
 Please note that each fold resp. restart two GPUs are required as the model does not fit into the memory of a 12 GB RAM GPU.
 
-- open the file multitask_run_sep_layers.py
+- open the file `multitask_run_sep_layers.py`
 - go through the "# ADAPT:" comments and adapt everything you need 
 - execute the script
 - the script will train and evaluate the models
@@ -112,8 +114,8 @@ Then open the jupyter notebook semantic_relatedness_labels.ipynb
 
 To calculate the Silhouette scores:
 
-- open the the jupyter notebook 'silhouette_analysis_label_clusters.ipynb'
+- open the the jupyter notebook `silhouette_analysis_label_clusters.ipynb`
 - adapt the paths  (see "# ADAPT:" comments)
 - run the jupyter notebook
 
-
+The k-means clustering is available in the file `kmeans_clustering.ipynb`
